@@ -1,4 +1,4 @@
-# Welcome to Samuel Hale's GitHub Profile 👋
+# Welcome to Samuel's GitHub Profile 👋
 
 Hello! I'm Samuel, a passionate programmer with experience in various programming languages and technologies. Here you'll find a collection of my projects ranging from AI weather apps and web applications to Docker configurations and educational projects. Feel free to explore my repositories and see what I've been working on!
 
