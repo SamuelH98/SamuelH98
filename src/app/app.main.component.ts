@@ -21,10 +21,7 @@ import { HomeComponent } from './app.home.component';
     <app-header></app-header>
     <app-home></app-home>
    
-  `,
-  styles: [`
-
-  `]
+  `
 })
 export class MainComponent {
   

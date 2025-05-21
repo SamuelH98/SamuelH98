@@ -14,57 +14,23 @@ import { NgFor, NgClass, NgIf } from '@angular/common'; // Added NgIf
     NgIf // Import NgIf for conditional cursor
   ],
   template: `
-    <div class="typewriter-container">
-      <h1>
-        {{ displayedTextLine1 }}<span class="cursor" *ngIf="showCursorLine1">|</span>
+    <!-- 
+      Ensure your global styles (e.g., in styles.css or on the body tag in index.html) 
+      set a dark background if this component doesn't fill the viewport.
+      Example for body: <body class="bg-gray-900 text-gray-200">
+    -->
+    <div class="flex flex-col justify-center items-center min-h-[80vh] text-center font-mono p-5 text-gray-200">
+      <h1 class="text-[clamp(3.5rem,5vw,6rem)] mb-2 min-h-[1.2em] font-bold">
+        {{ displayedTextLine1 }}<span class="inline-block animate-blink font-bold" *ngIf="showCursorLine1">|</span>
       </h1>
-      <p class="subtitle" *ngIf="line1Completed">
-        {{ displayedTextLine2 }}<span class="cursor" *ngIf="showCursorLine2">|</span>
+      <p 
+        class="text-[clamp(1.2rem,3vw,2rem)] text-gray-400 min-h-[1.2em] font-normal" 
+        *ngIf="line1Completed">
+        {{ displayedTextLine2 }}<span class="inline-block animate-blink font-bold" *ngIf="showCursorLine2">|</span>
       </p>
     </div>
   `,
-  styles: [`
-    /* Ensure your global styles (or body style) set a dark background if this component doesn't fill the viewport */
-    /* body { background-color: #121212; color: #e0e0e0; } */
-
-    .typewriter-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 80vh; /* Adjust as needed to fill desired space */
-      text-align: center;
-      font-family: 'Courier New', Courier, monospace; /* Classic typewriter font */
-      padding: 20px;
-      /* Assuming dark mode - text color will be light */
-      color: #e0e0e0; 
-    }
-
-    .typewriter-container h1 {
-      font-size: clamp(6rem, 5vw, 3.5rem); /* Responsive font size */
-      margin-bottom: 0.5rem;
-      min-height: 1.2em; /* Prevent layout shift as text types */
-      font-weight: bold;
-    }
-
-    .typewriter-container .subtitle {
-      font-size: clamp(1.2rem, 3vw, 2rem); /* Responsive font size */
-      color: #b0b0b0; /* Slightly dimmer for subtitle */
-      min-height: 1.2em; /* Prevent layout shift */
-      font-weight: normal;
-    }
-
-    .cursor {
-      display: inline-block;
-      animation: blink 0.7s infinite;
-      font-weight: bold; /* Make cursor more visible */
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-  `]
+  // styles array has been removed
 })
 export class HomeComponent implements OnInit, OnDestroy { // Implemented OnDestroy
 
@@ -82,7 +48,6 @@ export class HomeComponent implements OnInit, OnDestroy { // Implemented OnDestr
   public showCursorLine2: boolean = false; // Will be true when line 2 starts typing
   public line1Completed: boolean = false;
 
-  // private currentIndexLine1: number = 0; // Removed: Not needed for line 1
   private currentIndexLine2: number = 0;
 
   private timeouts: any[] = []; // To store timeout IDs for cleanup
@@ -93,16 +58,13 @@ export class HomeComponent implements OnInit, OnDestroy { // Implemented OnDestr
     // Display line 1 immediately
     this.displayedTextLine1 = this.fullTextLine1;
     this.line1Completed = true;
-    // this.showCursorLine1 is already false or can be explicitly set to false
-    // this.showCursorLine1 = false; // Ensure no cursor for static line 1
+    // this.showCursorLine1 is already false
 
     // Prepare for line 2 typing
     this.showCursorLine2 = true; 
     const timeoutId = setTimeout(() => this.startTypingLine2(), this.delayBetweenLinesMs);
     this.timeouts.push(timeoutId);
   }
-
-  // Removed startTypingLine1 method as line 1 is no longer typed
 
   private startTypingLine2(): void {
     if (this.currentIndexLine2 < this.fullTextLine2.length) {
@@ -118,7 +80,6 @@ export class HomeComponent implements OnInit, OnDestroy { // Implemented OnDestr
 
   ngOnDestroy(): void {
     // Clear any pending timeouts when the component is destroyed
-    // to prevent memory leaks or errors if navigation happens mid-animation.
     this.timeouts.forEach(timeoutId => clearTimeout(timeoutId));
   }
 }

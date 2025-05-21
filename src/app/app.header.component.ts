@@ -49,18 +49,7 @@ import { NgFor, NgClass } from '@angular/common';
         </button>
       </div>
     </header>
-  `,
-  styles: [`
-    .hover\\:shadow-glow:hover {
-      box-shadow: 0 0 15px rgba(59, 130, 246, 0.5), 
-                  0 0 8px rgba(59, 130, 246, 0.3);
-    }
-
-    :host-context(.dark) .hover\\:shadow-glow:hover {
-      box-shadow: 0 0 15px rgba(200, 200, 255, 0.4),
-                  0 0 8px rgba(200, 200, 255, 0.2);
-    }
-  `]
+  `
 })
 export class HeaderComponent implements OnInit {
   navItems = [
