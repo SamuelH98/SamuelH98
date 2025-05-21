@@ -9,17 +9,21 @@
   <!-- The <style> tag has been removed -->
 </head>
 <body class="
-  m-0 p-0 h-screen relative overflow-x-hidden <!-- Styles for body itself -->
-  before:content-[''] <!-- Required for pseudo-elements to show -->
-  before:fixed
-  before:inset-0 <!-- shorthand for top-0 left-0 right-0 bottom-0 -->
-  before:z-[-1] <!-- Custom z-index; places it behind body content -->
-  before:bg-[url('../public/dark-purple-3840x2160-17330.png')] <!-- Ensure this path is correct, relative to your 'dist' or 'assets' folder after build -->
-  before:bg-fixed
-  before:bg-center
-  before:bg-no-repeat
-  before:bg-cover
+  m-0 p-0 h-screen relative overflow-x-hidden
+  content-['']
+  fixed
+  inset-0
+  z-[-1]
+  bg-[url('../public/dark-purple-3840x2160-17330.png')]
+  bg-fixed
+  bg-center
+  bg-no-repeat
+  bg-cover
+  backdrop-blur-md
+
 ">
+
+
   <app-main></app-main> <!-- Your Angular app's root component -->
 </body>
 </html>

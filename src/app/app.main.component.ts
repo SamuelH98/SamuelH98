@@ -1,28 +1,20 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NgFor, NgClass } from '@angular/common';
 import { HeaderComponent } from './app.header.component';
-import { HomeComponent } from './app.home.component';
-
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  encapsulation: ViewEncapsulation.None, // ✅ Important: let dark mode styles cascade
+  encapsulation: ViewEncapsulation.None,
   imports: [
-    RouterLink,
-    RouterLinkActive,
-    NgFor,
-    NgClass,
-    HeaderComponent, 
-    HomeComponent
+    RouterOutlet,
+    HeaderComponent
   ],
   template: `
     <app-header></app-header>
-    <app-home></app-home>
-   
+    <router-outlet></router-outlet>
   `
 })
 export class MainComponent {
-  
 }

@@ -7,10 +7,6 @@ import { NgFor, NgClass, NgIf } from '@angular/common'; // Added NgIf
   standalone: true,
   encapsulation: ViewEncapsulation.None, // ✅ Important: let dark mode styles cascade
   imports: [
-    RouterLink,
-    RouterLinkActive,
-    NgFor,
-    NgClass,
     NgIf // Import NgIf for conditional cursor
   ],
   template: `
