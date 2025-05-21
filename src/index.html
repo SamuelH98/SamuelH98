@@ -6,26 +6,44 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  
 </head>
 
 <style>
-
   body {
-    /* The image used */
-    background-image: url('dark-purple-3840x2160-17330.png');
+    margin: 0; /* Reset default margin */
+    padding: 0; /* Reset default padding */
+    height: 100vh; /* Ensure body takes full viewport height */
+    position: relative; /* Crucial for positioning the ::before pseudo-element */
+    overflow-x: hidden; /* Prevents horizontal scrollbar sometimes caused by blur edge */
+    /* The body itself will NOT have the background-image or filter */
+  }
 
-    /* Full height */
-    height: 100%; 
+  body::before {
+    content: ""; /* Pseudo-elements require content, even if empty */
+    position: fixed; /* Keeps the background fixed during scroll, covering the viewport */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1; /* Place the pseudo-element BEHIND all other body content */
 
-    /* Create the parallax scrolling effect */
-    background-attachment: fixed;
+    /* --- Apply background image and blur HERE --- */
+    background-image: url('dark-purple-3840x2160-17330.png'); /* Your image path */
+    background-attachment: fixed; /* Already good for parallax */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+
+    filter: blur(3px); /* Adjust the 2px to your desired blur intensity */
+
+    /* Optional: Slightly scale to avoid hard edges from blur at viewport boundaries */
+    /* transform: scale(1.02); */
   }
 </style>
 
 <body>
-  <app-header></app-header>
+  <app-main></app-main>
+  
 </body>
 </html>

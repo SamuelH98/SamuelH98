@@ -16,7 +16,7 @@ import { NgFor, NgClass } from '@angular/common';
     <header class="sticky top-0 z-50 w-full py-4 px-6 bg-transparent">
       <div class="flex justify-between items-center">
         <!-- Navigation Items -->
-        <div class="flex space-x-8">
+        <div class="flex space-x-5">
           <a
             *ngFor="let item of navItems"
             [routerLink]="item.path"
