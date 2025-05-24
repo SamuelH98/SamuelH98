@@ -3,6 +3,8 @@ import {
   HostListener,
   ChangeDetectionStrategy,
   ViewEncapsulation,
+  OnInit,
+  OnDestroy,
 } from '@angular/core';
 import { NgFor } from '@angular/common';
 
@@ -28,11 +30,11 @@ import { NgFor } from '@angular/common';
 <!-- PAGE GRID -->
 <div
   class="min-h-screen grid grid-cols-1 lg:grid-cols-2
-         items-start pt-16 lg:pt-24 lg:gap-24
-         px-6 lg:px-20 text-slate-100">
+         items-start justify-center pt-8 lg:pt-12 lg:gap-24
+         px-6 lg:px-20 text-slate-100 max-w-7xl mx-auto">
 
   <!-- ─────────── HERO / NAV (left) ─────────── -->
-  <aside class="flex flex-col items-start w-full max-w-md">
+  <aside class="flex flex-col items-start w-full max-w-md lg:sticky lg:top-12 lg:h-screen lg:max-h-screen">
 
     <!-- name + tagline -->
     <h1 class="text-5xl font-extrabold leading-tight">Samuel&nbsp;Hale</h1>
@@ -46,11 +48,11 @@ import { NgFor } from '@angular/common';
     </p>
 
     <!-- section nav -->
-    <nav class="mt-16 space-y-6 text-sm tracking-widest font-semibold uppercase">
+    <nav class="mt-16 text-sm tracking-widest font-semibold uppercase">
       <a *ngFor="let item of navItems"
          href="#"
          (click)="goto($event, item.id)"
-         class="group flex items-center gap-3 transition-colors
+         class="group flex items-center gap-3 transition-colors mb-6
                 text-slate-400 hover:text-slate-200"
          [class.text-white]="active === item.id">
         <span class="before:content-[''] before:block before:h-px before:w-0
@@ -62,7 +64,7 @@ import { NgFor } from '@angular/common';
     </nav>
 
     <!-- ─────────── SOCIAL ICONS (bottom) ─────────── -->
-    <ul class="mt-auto flex gap-6 pt-12">
+    <ul class="mt-auto flex gap-6 pt-12 pb-12">
       <li *ngFor="let s of socials">
         <a [href]="s.href"
            target="_blank" rel="noopener noreferrer"
@@ -83,6 +85,7 @@ import { NgFor } from '@angular/common';
       <h2 class="sr-only">About me</h2>
       <ng-container *ngFor="let paragraph of about">
         <p [innerHTML]="paragraph"></p>
+        <br>
       </ng-container>
     </section>
 
@@ -113,7 +116,62 @@ import { NgFor } from '@angular/common';
         </ul>
       </article>
     </section>
-  </div>
+
+    <hr class="my-16 border-slate-600/30" />
+
+    <!-- PROJECTS -->
+    <section id="projects" class="space-y-16 max-w-[38rem] w-full">
+      <h2 class="sr-only">Projects</h2>
+
+      <article *ngFor="let project of projects" class="space-y-5">
+        <div class="flex items-center gap-4">
+          <h3 class="text-lg font-semibold">{{ project.title }}</h3>
+          <div class="flex gap-2">
+            <a *ngIf="project.github" 
+               [href]="project.github"
+               target="_blank" 
+               rel="noopener noreferrer"
+               class="text-slate-400 hover:text-white transition-colors"
+               aria-label="View source code">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58
+                         0-.29-.01-1.06-.02-2.08-3.34.73-4.04-1.61-4.04-1.61
+                         -.55-1.39-1.34-1.76-1.34-1.76-1.1-.75.08-.74.08-.74
+                         1.22.09 1.86 1.26 1.86 1.26 1.08 1.85 2.83 1.32 3.52 1
+                         .11-.78.42-1.32.76-1.62-2.66-.3-5.47-1.33-5.47-5.93
+                         0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.52.12-3.17
+                         0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4 11.5 11.5
+                         0 0 1 3 .4c2.28-1.55 3.29-1.23 3.29-1.23 .66 1.65
+                         .25 2.87 .12 3.17 .77.84 1.23 1.92 1.23 3.23
+                         0 4.61-2.81 5.63-5.49 5.93 .43.37 .81 1.1 .81 2.22
+                         0 1.6-.01 2.88-.01 3.27 0 .32 .21.69 .82.57A12 12 0 0 0 12 .5z"/>
+              </svg>
+            </a>
+            <a *ngIf="project.live" 
+               [href]="project.live"
+               target="_blank" 
+               rel="noopener noreferrer"
+               class="text-slate-400 hover:text-white transition-colors"
+               aria-label="View live demo">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <p class="leading-7 text-slate-300" [innerHTML]="project.description"></p>
+
+        <ul class="flex flex-wrap gap-2">
+          <li *ngFor="let tag of project.tags"
+              class="px-2 py-0.5 rounded-full bg-slate-700/60
+                     text-xs font-medium">
+            {{ tag }}
+          </li>
+        </ul>
+      </article>
+    </section>
 </div>
   `,
   /* ───────────────────────── STYLES ───────────────────────── */
@@ -129,7 +187,7 @@ import { NgFor } from '@angular/common';
     a:focus-visible { outline: 2px dashed theme('colors.violet.400'); outline-offset: 2px; }
   `],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
   /* ─────────── NAV ─────────── */
   navItems = [
     { id: 'about',      label: 'About' },
@@ -143,7 +201,7 @@ export class HomeComponent {
     {
       label: 'GitHub',
       href : 'https://github.com/yourname',
-      svg  : `<svg fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
+      svg  : `<svg fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58
                          0-.29-.01-1.06-.02-2.08-3.34.73-4.04-1.61-4.04-1.61
                          -.55-1.39-1.34-1.76-1.34-1.76-1.1-.75.08-.74.08-.74
@@ -160,32 +218,28 @@ export class HomeComponent {
     {
       label: 'LinkedIn',
       href : 'https://linkedin.com/in/yourname',
-      svg  : `<svg fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
-                <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM2.5 8.98h5V21.5h-5V8.98ZM9.5 8.98h4.8v1.71h.07
-                         c.67-1.26 2.3-2.6 4.74-2.6 5.07 0 6 3.34 6 7.68v5.73h-5v-5.08
-                         c0-1.21-.02-2.77-1.69-2.77-1.69 0-1.95 1.32-1.95 2.69v5.16h-5V8.98Z"/>
+      svg  : `<svg fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853
+                         0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9
+                         1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337
+                         7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063
+                         2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225
+                         0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792
+                         24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
              </svg>`
     },
     {
       label: 'Instagram',
-      href : 'https://instagram.com/yourname',
-      svg  : `<svg fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
-                <path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2
-                         c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7
-                         1.3-3 3-3h10zm-5 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2
-                         a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm4.8-.9a1.2 1.2 0 1 0 0-2.4
-                         1.2 1.2 0 0 0 0 2.4z"/>
+      href : 'https://instagram.com/in/yourname',
+      svg  : `<svg fill="currentColor" viewBox="0 0 24 24">
+                <path d="M7.5 2h9c3.038 0 5.5 2.462 5.5 5.5v9c0 3.038-2.462 5.5-5.5 5.5h-9C4.462 22 2 19.538 2 16.5v-9C2 4.462 4.462 2 7.5 2zM7.5 4C5.567 4 4 5.567 4 7.5v9c0 1.933 1.567 3.5 3.5 3.5h9c1.933 0 3.5-1.567 3.5-3.5v-9C20 5.567 18.433 4 16.5 4h-9zM12 7a5 5 0 110 10 5 5 0 010-10zm0 2a3 3 0 100 6 3 3 0 000-6zm5.25-1.5a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5z"/>
              </svg>`
     },
     {
       label: 'X / Twitter',
       href : 'https://twitter.com/yourname',
-      svg  : `<svg fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
-                <path d="M19.633 3H4.367A1.37 1.37 0 0 0 3 4.367v15.266A1.37 1.37 0 0 0 4.367 21h15.266A1.37 1.37 0 0 0 21
-                         19.633V4.367A1.37 1.37 0 0 0 19.633 3ZM8.49 17H6.296V9h2.194v8Zm-1.097-9.14a1.268 1.268 0 1 1 0-2.536
-                         1.268 1.268 0 0 1 0 2.536Zm10.311 9.14h-2.193v-3.818c0-.911-.018-2.084-1.27-2.084-1.27
-                         0-1.464.99-1.464 2.015V17h-2.193V9h2.106v1.097h.03c.293-.556 1.012-1.142 2.083-1.142
-                         2.226 0 2.638 1.466 2.638 3.372V17Z"/>
+      svg  : `<svg fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
              </svg>`
     }
   ];
@@ -197,7 +251,7 @@ export class HomeComponent {
      about building <strong class="font-semibold">intelligent, practical
      systems</strong> that solve real-world problems.`,
     `I hold a <strong>B.S.</strong> in Software Engineering (Data Science) and
-     I'm currently pursuing my <strong>M.S.</strong> through ECU’s accelerated
+     I'm currently pursuing my <strong>M.S.</strong> through ECU's accelerated
      program, deepening my expertise in <strong>full-stack development</strong>
      and <strong>reproducible research</strong>.`,
     `Experience highlights include
@@ -205,9 +259,9 @@ export class HomeComponent {
      <strong>Django&nbsp;+&nbsp;Nix</strong> capstone with
      <strong>CI/CD pipelines</strong>, and building an
      <strong>election-prediction app</strong> with PyTorch & Flask.`,
-    `When I’m not developing, you’ll find me exploring
+    `When I'm not developing, you'll find me exploring
      <strong>Linux / NixOS</strong>, diving into technical literature, or
-     hanging out with my two cats. I thrive where
+     hanging out with friends. I thrive where
      <strong>AI, software engineering, and systems thinking</strong> meet.`,
   ];
 
@@ -223,12 +277,78 @@ export class HomeComponent {
     },
   ];
 
+  /* ─────────── PROJECTS DATA ─────────── */
+  projects = [
+    {
+      title: 'AI Election Predictor',
+      description: `Built a <strong>machine learning web app</strong> using PyTorch and Flask 
+                    that predicts election outcomes based on historical data and polling trends. 
+                    Features real-time visualization and <strong>95% accuracy</strong> on test data.`,
+      tags: ['PyTorch', 'Flask', 'Python', 'Machine Learning', 'Data Visualization'],
+      github: 'https://github.com/yourname/election-predictor',
+      live: 'https://election-predictor.yoursite.com'
+    },
+    {
+      title: 'LLM Dialect Classifier',
+      description: `Fine-tuned a <strong>transformer model</strong> to identify regional dialects 
+                    in text with 87% accuracy. Implemented custom tokenization and 
+                    <strong>transfer learning</strong> techniques for multilingual support.`,
+      tags: ['Transformers', 'HuggingFace', 'NLP', 'PyTorch', 'BERT'],
+      github: 'https://github.com/yourname/dialect-classifier',
+      live: null
+    },
+    {
+      title: 'Django Research Platform',
+      description: `Led development of a <strong>collaborative research platform</strong> 
+                    with Django backend, PostgreSQL database, and automated CI/CD pipeline. 
+                    Serves 200+ active researchers with <strong>99.9% uptime</strong>.`,
+      tags: ['Django', 'PostgreSQL', 'Docker', 'CI/CD', 'Nix', 'Redis'],
+      github: 'https://github.com/yourname/research-platform',
+      live: 'https://research.youruni.edu'
+    }
+  ];
+
   /* nav highlight + centre scroll */
   goto(ev: Event, id: string) {
     ev.preventDefault();
     this.active = id;
     document.getElementById(id)
-      ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* scroll spy for active nav */
+  ngOnInit() {
+    this.setupScrollSpy();
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  private handleScroll = () => {
+    const sections = this.navItems.map(item => ({
+      id: item.id,
+      element: document.getElementById(item.id)
+    })).filter(section => section.element);
+
+    let currentSection = '';
+    const scrollPosition = window.scrollY + 200; // offset for better UX
+
+    for (const section of sections) {
+      if (section.element && section.element.offsetTop <= scrollPosition) {
+        currentSection = section.id;
+      }
+    }
+
+    if (currentSection && currentSection !== this.active) {
+      this.active = currentSection;
+    }
+  }
+
+  private setupScrollSpy() {
+    window.addEventListener('scroll', this.handleScroll);
+    // Set initial active section
+    this.handleScroll();
   }
 
   /* spotlight */

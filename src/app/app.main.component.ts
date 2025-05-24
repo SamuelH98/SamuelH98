@@ -8,7 +8,6 @@ import { HomeComponent } from './app.home.component';
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   imports: [
-    RouterOutlet,
     HomeComponent
   ],
   template: `
