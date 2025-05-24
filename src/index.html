@@ -1,44 +1,24 @@
 <!doctype html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>SamuelH98</title>
-<base href="/">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<style>
-/* Background blur overlay */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: url('../public/dark-purple-3840x2160-17330.png');
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-/* Main blur effect for the entire page content */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  backdrop-filter: blur(8px);
-  pointer-events: none;
-}
-
-/* Ensure app content is above the blur overlay */
-app-main {
-  position: relative;
-  z-index: 2;
-}
-</style>
+  <meta charset="utf-8">
+  <title>SamuelH98</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- The <style> tag has been removed -->
 </head>
-<body class="m-0 p-0 h-screen relative overflow-x-hidden">
-<app-main></app-main> <!-- Your Angular app's root component -->
+<body class="
+  m-0 p-0 h-screen relative overflow-x-hidden
+  fixed
+  inset-0
+  z-[-1]
+  bg-[url('../public/dark-purple-3840x2160-17330.png')]
+ 
+
+">
+
+
+  <app-main></app-main> <!-- Your Angular app's root component -->
 </body>
 </html>

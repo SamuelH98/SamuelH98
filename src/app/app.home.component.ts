@@ -93,66 +93,74 @@ import { NgFor, NgIf, NgClass } from '@angular/common';
     <hr class="border-slate-600/30 mb-16"/>
 
     <!-- EXPERIENCE -->
-    <section id="experience" class="space-y-16 max-w-[38rem] w-full mb-16">
+    <section id="experience" class="mb-16 max-w-[38rem] w-full">
       <h2 class="sr-only">Experience</h2>
-      <article *ngFor="let job of experience" class="space-y-5">
-        <p class="text-xs font-semibold uppercase tracking-wide text-slate-400 mb-5">{{ job.period }}</p>
-        <h3 class="text-lg font-semibold mb-5">
-          {{ job.title }} <span class="font-normal text-slate-300">· {{ job.company }}</span>
-        </h3>
-        <p class="leading-7 text-slate-300 mb-5" [innerHTML]="job.summary"></p>
-        <ul class="flex flex-wrap gap-2">
-          <li *ngFor="let tag of job.tags"
-              class="px-2 py-0.5 rounded-full bg-slate-700/60 text-xs font-medium">{{ tag }}</li>
-        </ul>
-      </article>
+      <div class="space-y-16">
+        <article *ngFor="let job of experience" class="block">
+          <div class="mb-5">
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-400 mb-3">{{ job.period }}</p>
+            <h3 class="text-lg font-semibold mb-3">
+              {{ job.title }} <span class="font-normal text-slate-300">· {{ job.company }}</span>
+            </h3>
+            <p class="leading-7 text-slate-300 mb-4" [innerHTML]="job.summary"></p>
+            <ul class="flex flex-wrap gap-2">
+              <li *ngFor="let tag of job.tags"
+                  class="px-2 py-0.5 rounded-full bg-slate-700/60 text-xs font-medium">{{ tag }}</li>
+            </ul>
+          </div>
+        </article>
+      </div>
     </section>
 
     <hr class="border-slate-600/30 mb-16"/>
 
     <!-- PROJECTS -->
-    <section id="projects" class="space-y-16 max-w-[38rem] w-full">
+    <section id="projects" class="mb-16 max-w-[38rem] w-full">
       <h2 class="sr-only">Projects</h2>
-      <article *ngFor="let project of projects" class="space-y-5">
-        <div class="flex items-center gap-4 mb-5">
-          <h3 class="text-lg font-semibold">{{ project.title }}</h3>
-          <div class="flex gap-2">
-            <a *ngIf="project.github"
-               [href]="project.github" target="_blank" rel="noopener"
-               class="text-slate-400 hover:text-white transition-colors"
-               aria-label="View source code">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58
-                         0-.29-.01-1.06-.02-2.08-3.34.73-4.04-1.61-4.04-1.61
-                         -.55-1.39-1.34-1.76-1.34-1.76-1.1-.75.08-.74.08-.74
-                         1.22.09 1.86 1.26 1.86 1.26 1.08 1.85 2.83 1.32 3.52 1
-                         .11-.78.42-1.32.76-1.62-2.66-.3-5.47-1.33-5.47-5.93
-                         0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.52.12-3.17
-                         0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4 11.5 11.5
-                         0 0 1 3 .4c2.28-1.55 3.29-1.23 3.29-1.23 .66 1.65
-                         .25 2.87 .12 3.17 .77.84 1.23 1.92 1.23 3.23
-                         0 4.61-2.81 5.63-5.49 5.93 .43.37 .81 1.1 .81 2.22
-                         0 1.6-.01 2.88-.01 3.27 0 .32 .21.69 .82.57A12 12 0 0 0 12 .5z"/>
-              </svg>
-            </a>
-            <a *ngIf="project.live"
-               [href]="project.live" target="_blank" rel="noopener"
-               class="text-slate-400 hover:text-white transition-colors"
-               aria-label="View live demo">
-              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0
-                         0v6m0-6L10 14"/>
-              </svg>
-            </a>
+      <div class="space-y-16">
+        <article *ngFor="let project of projects" class="block">
+          <div class="mb-5">
+            <div class="flex items-center gap-4 mb-3">
+              <h3 class="text-lg font-semibold">{{ project.title }}</h3>
+              <div class="flex gap-2">
+                <a *ngIf="project.github"
+                   [href]="project.github" target="_blank" rel="noopener"
+                   class="text-slate-400 hover:text-white transition-colors"
+                   aria-label="View source code">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58
+                             0-.29-.01-1.06-.02-2.08-3.34.73-4.04-1.61-4.04-1.61
+                             -.55-1.39-1.34-1.76-1.34-1.76-1.1-.75.08-.74.08-.74
+                             1.22.09 1.86 1.26 1.86 1.26 1.08 1.85 2.83 1.32 3.52 1
+                             .11-.78.42-1.32.76-1.62-2.66-.3-5.47-1.33-5.47-5.93
+                             0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.52.12-3.17
+                             0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4 11.5 11.5
+                             0 0 1 3 .4c2.28-1.55 3.29-1.23 3.29-1.23 .66 1.65
+                             .25 2.87 .12 3.17 .77.84 1.23 1.92 1.23 3.23
+                             0 4.61-2.81 5.63-5.49 5.93 .43.37 .81 1.1 .81 2.22
+                             0 1.6-.01 2.88-.01 3.27 0 .32 .21.69 .82.57A12 12 0 0 0 12 .5z"/>
+                  </svg>
+                </a>
+                <a *ngIf="project.live"
+                   [href]="project.live" target="_blank" rel="noopener"
+                   class="text-slate-400 hover:text-white transition-colors"
+                   aria-label="View live demo">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0
+                             0v6m0-6L10 14"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <p class="leading-7 text-slate-300 mb-4" [innerHTML]="project.description"></p>
+            <ul class="flex flex-wrap gap-2">
+              <li *ngFor="let tag of project.tags"
+                  class="px-2 py-0.5 rounded-full bg-slate-700/60 text-xs font-medium">{{ tag }}</li>
+            </ul>
           </div>
-        </div>
-        <p class="leading-7 text-slate-300 mb-5" [innerHTML]="project.description"></p>
-        <ul class="flex flex-wrap gap-2">
-          <li *ngFor="let tag of project.tags"
-              class="px-2 py-0.5 rounded-full bg-slate-700/60 text-xs font-medium">{{ tag }}</li>
-        </ul>
-      </article>
+        </article>
+      </div>
     </section>
 
   </main>
@@ -171,7 +179,38 @@ import { NgFor, NgIf, NgClass } from '@angular/common';
 a:focus-visible{
   outline:2px dashed theme('colors.violet.400');
   outline-offset:2px;
-}`],
+}
+
+/* Fallback spacing styles in case Tailwind classes are purged */
+.projects-section {
+  margin-bottom: 4rem;
+}
+
+.project-item {
+  margin-bottom: 4rem;
+}
+
+.project-item:last-child {
+  margin-bottom: 0;
+}
+
+.project-header {
+  margin-bottom: 0.75rem;
+}
+
+.project-description {
+  margin-bottom: 1rem;
+}
+
+/* Force spacing for space-y utilities */
+.space-y-16 > * + * {
+  margin-top: 4rem;
+}
+
+.space-y-5 > * + * {
+  margin-top: 1.25rem;
+}
+`],
 })
 export class HomeComponent implements AfterViewInit, OnDestroy {
   /* ─────── public data  (fully typed) ─────── */
@@ -187,22 +226,22 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     {
       label: 'GitHub',
       href : 'https://github.com/yourname',
-      svg  : `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 .5a12 ..."/></svg>`
+      svg  : `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.1-.75.08-.74.08-.74 1.22.09 1.86 1.26 1.86 1.26 1.08 1.85 2.83 1.32 3.52 1 .11-.78.42-1.32.76-1.62-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.66 1.65.25 2.87.12 3.17.77.84 1.23 1.92 1.23 3.23 0 4.61-2.81 5.63-5.49 5.93.43.37.81 1.1.81 2.22v3.27c0 .32.21.69.82.57A12 12 0 0 0 12 .5z"/></svg>`
     },
     {
       label: 'LinkedIn',
       href : 'https://linkedin.com/in/yourname',
-      svg  : `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 ..."/></svg>`
+      svg  : `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>`
     },
     {
       label: 'Instagram',
       href : 'https://instagram.com/in/yourname',
-      svg  : `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M7.5 2h9 ..."/></svg>`
+      svg  : `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M7.5 2h9a5.5 5.5 0 0 1 5.5 5.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zM7.5 4A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/></svg>`
     },
     {
       label: 'X / Twitter',
       href : 'https://twitter.com/yourname',
-      svg  : `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25 ..."/></svg>`
+      svg  : `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`
     },
   ];
 
