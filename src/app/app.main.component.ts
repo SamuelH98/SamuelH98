@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NgFor, NgClass } from '@angular/common';
-import { HeaderComponent } from './app.header.component';
+import { HomeComponent } from './app.home.component';
 
 @Component({
   selector: 'app-main',
@@ -9,11 +9,11 @@ import { HeaderComponent } from './app.header.component';
   encapsulation: ViewEncapsulation.None,
   imports: [
     RouterOutlet,
-    HeaderComponent
+    HomeComponent
   ],
   template: `
-    <app-header></app-header>
-    <router-outlet></router-outlet>
+    
+    <app-home></app-home>
   `
 })
 export class MainComponent {
