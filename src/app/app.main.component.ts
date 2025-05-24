@@ -1,6 +1,4 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { NgFor, NgClass } from '@angular/common';
 import { HomeComponent } from './app.home.component';
 
 @Component({
