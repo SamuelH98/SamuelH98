@@ -24,7 +24,7 @@ I’m passionate about solving complex problems, crafting reliable systems, and 
 ---
 
 ### 🧠 Skills
-[![My Skills](https://skillicons.dev/icons?i=py,java,cpp,js,ts,html,css,react,nodejs,django,flask,git,d
+[![My Skills](https://skillicons.dev/icons?i=py,java,cpp,js,ts,html,css,react,nodejs,django,flask,git,docker,linux,sqlite,postgres,mongodb,express,wordpress,angular,gcp,vscode,visualstudio,pycharm,idea,eclipse)](https://skillicons.dev)
 
 
 ## 📊 GitHub Stats
