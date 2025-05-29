@@ -35,11 +35,9 @@ import { NgFor, NgIf, NgClass } from '@angular/common';
             text-slate-100 max-w-7xl mx-auto
             flex flex-col lg:flex-row lg:gap-24 items-start">
 
-
   <!-- 🡆 LEFT COLUMN (sticky) -->
   <aside class="flex flex-col items-start w-full max-w-md flex-shrink-0
               lg:sticky lg:top-24 lg:self-start">
-
 
     <h1 class="text-5xl font-extrabold leading-tight mb-4">Samuel&nbsp;Hale</h1>
     <h2 class="text-xl font-semibold text-slate-300 mb-6">AI&nbsp;Software&nbsp;Engineer</h2>
@@ -52,7 +50,7 @@ import { NgFor, NgIf, NgClass } from '@angular/common';
     <!-- section nav -->
     <nav class="text-sm tracking-widest font-semibold uppercase mb-auto">
       <a *ngFor="let item of navItems"
-         href="#{{ item.id }}"
+         [href]="'#' + item.id"
          (click)="goto(item.id, $event)"
          class="group flex items-center gap-3 transition-colors mb-6
                 text-slate-400 hover:text-slate-200"
@@ -169,16 +167,32 @@ import { NgFor, NgIf, NgClass } from '@angular/common';
 
   /* ───────────────────────── STYLES ───────────────────────── */
   styles: [`
-#spot{
+#spot {
   background: radial-gradient(
-    450px at var(--x,50%) var(--y,50%),
-    rgba(147,51,234,.35),
+    450px at var(--x, 50%) var(--y, 50%),
+    rgba(147, 51, 234, 0.35),
     transparent 70%
   );
 }
-a:focus-visible{
-  outline:2px dashed theme('colors.violet.400');
-  outline-offset:2px;
+
+a:focus-visible {
+  outline: 2px dashed theme('colors.violet.400');
+  outline-offset: 2px;
+}
+
+/* Navigation line animation */
+.group span::before {
+  content: '';
+  display: block;
+  height: 1px;
+  background-color: rgb(148 163 184);
+  transition: all 0.3s ease;
+  width: 0;
+}
+
+.group:hover span::before,
+.group.active span::before {
+  width: 3rem;
 }
 
 /* Fallback spacing styles in case Tailwind classes are purged */
@@ -210,6 +224,17 @@ a:focus-visible{
 .space-y-5 > * + * {
   margin-top: 1.25rem;
 }
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ensure proper text rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 `],
 })
 export class HomeComponent implements AfterViewInit, OnDestroy {
@@ -225,7 +250,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   socials: Array<{ label: string; href: string; svg: string }> = [
     {
       label: 'GitHub',
-      href : 'https://github.com/yourname',
+      href : 'https://github.com/SamuelH98',
       svg  : `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.1-.75.08-.74.08-.74 1.22.09 1.86 1.26 1.86 1.26 1.08 1.85 2.83 1.32 3.52 1 .11-.78.42-1.32.76-1.62-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.66 1.65.25 2.87.12 3.17.77.84 1.23 1.92 1.23 3.23 0 4.61-2.81 5.63-5.49 5.93.43.37.81 1.1.81 2.22v3.27c0 .32.21.69.82.57A12 12 0 0 0 12 .5z"/></svg>`
     },
     {
@@ -235,7 +260,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     },
     {
       label: 'Instagram',
-      href : 'https://instagram.com/in/yourname',
+      href : 'https://instagram.com/yourname',
       svg  : `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M7.5 2h9a5.5 5.5 0 0 1 5.5 5.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zM7.5 4A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/></svg>`
     },
     {
@@ -292,30 +317,28 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     live?: string;
   }> = [
     {
-      title: 'AI Election Predictor',
+      title: '2024 AI Election Predictor',
       description: `Built a <strong>machine-learning web app</strong> using
-                    PyTorch and Flask that predicts election outcomes with
-                    <strong>95 % accuracy</strong>.`,
+                    PyTorch and Flask that predicts 2024 election outcome with
+                    <strong>82% accuracy</strong>.`,
       tags: ['PyTorch', 'Flask', 'Python', 'Machine Learning', 'Data Viz'],
-      github: 'https://github.com/yourname/election-predictor',
-      live  : 'https://election-predictor.yoursite.com',
+      github: 'https://github.com/SamuelH98/CSCI6020-final-project',
+      
     },
     {
-      title: 'LLM Dialect Classifier',
-      description: `Fine-tuned a <strong>transformer model</strong> to identify
-                    regional dialects with 87 % accuracy.`,
-      tags: ['Transformers', 'HuggingFace', 'NLP', 'PyTorch'],
-      github: 'https://github.com/yourname/dialect-classifier',
-      live  : '',
+      title: 'Cython Data Preprocessor for english-corpora.org',
+      description: 'A <strong>high-performance</strong> data preprocessing tool written in <strong>Cython</strong>, designed to efficiently parse and clean large corpora from <strong>english-corpora.org</strong>. The tool accelerates <strong>tokenization</strong> and <strong>formatting</strong> tasks to support downstream <strong>NLP pipelines</strong>.',
+      tags: ['Cython'],
+      github: 'https://github.com/SamuelH98/data-preprocessor',
     },
     {
-      title: 'Django Research Platform',
-      description: `Led development of a <strong>collaborative research platform</strong>
-                    with CI/CD automation and <strong>99.9 % uptime</strong>.`,
-      tags: ['Django', 'PostgreSQL', 'Docker', 'CI/CD', 'Nix'],
-      github: 'https://github.com/yourname/research-platform',
-      live  : 'https://research.youruni.edu',
-    },
+      title: 'Dictionary program with AI assistant',
+      description: 'An interactive <strong>dictionary application</strong> featuring an <strong>AI-powered assistant</strong> capable of understanding user input and providing <strong>definitions</strong>, <strong>synonyms</strong>, and <strong>usage examples</strong>. Built using <strong>PyTorch</strong> for the assistant’s <strong>intent recognition</strong>, with NLP support from <strong>nltk</strong> and <strong>Numpy</strong>.',
+      tags: ['PyTorch', 'Numpy', 'nltk', 'Python'],
+      github: 'https://github.com/SamuelH98/SENG-1020-Project',
+    }
+
+
   ];
 
   /* ───── constructor / DI ───── */
@@ -327,42 +350,61 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   /* ───── scroll-spy (IntersectionObserver) ───── */
   private observer?: IntersectionObserver;
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
       this.observer = new IntersectionObserver(
-        entries => this.zone.run(() => {
-          const visible = entries
-            .filter(e => e.isIntersecting)
-            .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
-          if (visible && visible.target.id !== this.active) {
-            this.active = visible.target.id;
-            this.cd.markForCheck();          // OnPush update
-          }
-        }),
-        { threshold: [0.3], rootMargin: '-64px 0px -66% 0px' }
+        (entries) => {
+          this.zone.run(() => {
+            const visible = entries
+              .filter(e => e.isIntersecting)
+              .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+            
+            if (visible && visible.target.id !== this.active) {
+              this.active = visible.target.id;
+              this.cd.markForCheck();
+            }
+          });
+        },
+        { 
+          threshold: [0.3], 
+          rootMargin: '-64px 0px -66% 0px' 
+        }
       );
 
-      this.navItems.forEach(i => {
-        const el = document.getElementById(i.id);
-        if (el) this.observer!.observe(el);
+      // Observe all navigation sections
+      this.navItems.forEach(item => {
+        const element = document.getElementById(item.id);
+        if (element) {
+          this.observer!.observe(element);
+        }
       });
     });
   }
 
-  ngOnDestroy() { this.observer?.disconnect(); }
+  ngOnDestroy(): void { 
+    this.observer?.disconnect(); 
+  }
 
   /* ───── nav link click helper ───── */
-  goto(id: string, ev?: MouseEvent) {
-    ev?.preventDefault();
-    document.getElementById(id)
-      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  goto(id: string, event?: MouseEvent): void {
+    event?.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }
   }
 
   /* ───── spot-light tracking ───── */
   @HostListener('mousemove', ['$event'])
-  track({ clientX, clientY }: MouseEvent) {
-    const el = document.getElementById('spot');
-    el?.style.setProperty('--x', `${clientX}px`);
-    el?.style.setProperty('--y', `${clientY}px`);
+  track(event: MouseEvent): void {
+    const { clientX, clientY } = event;
+    const spotElement = document.getElementById('spot');
+    if (spotElement) {
+      spotElement.style.setProperty('--x', `${clientX}px`);
+      spotElement.style.setProperty('--y', `${clientY}px`);
+    }
   }
 }
