@@ -12,6 +12,7 @@ import {
   ChangeDetectorRef, NgZone,
 } from '@angular/core';
 import { NgFor, NgIf, NgClass } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -39,16 +40,30 @@ import { NgFor, NgIf, NgClass } from '@angular/common';
   <aside class="flex flex-col items-start w-full max-w-md flex-shrink-0
               lg:sticky lg:top-24 lg:self-start">
 
-    <h1 class="text-5xl font-extrabold leading-tight mb-4">Samuel&nbsp;Hale</h1>
-    <h2 class="text-xl font-semibold text-slate-300 mb-6">AI&nbsp;Software&nbsp;Engineer</h2>
+    <!-- Adjusted H1 for mobile size -->
+    <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight mb-4">Samuel Hale</h1>
+    <!-- Adjusted H2 for mobile size -->
+    <h2 class="text-lg lg:text-xl font-semibold text-slate-300 mb-6">AI Software Engineer</h2>
+
+    <!-- socials - NOW ALWAYS FLEX (visible on mobile) -->
+    <ul class="flex gap-6 pt-0 pb-8" *ngIf="sanitizedSocials && sanitizedSocials.length > 0">
+      <li *ngFor="let s of sanitizedSocials">
+        <a [href]="s.href" target="_blank" rel="noopener"
+          [attr.aria-label]="s.label"
+          class="text-white hover:text-violet-300 transition-colors inline-flex items-center justify-center">
+          <span [innerHTML]="s.svg" class="w-5 h-5 block"></span>
+        </a>
+      </li>
+    </ul>
+
     <p class="text-base text-slate-400 max-w-sm mb-16">
-      I build intelligent, user-focused software&nbsp;solutions that seamlessly
+      I build intelligent, user-focused software solutions that seamlessly
       integrate AI to enhance functionality, accessibility, and performance on
       the web.
     </p>
 
-    <!-- section nav -->
-    <nav class="text-sm tracking-widest font-semibold uppercase mb-auto">
+    <!-- section nav - HIDDEN ON MOBILE, BLOCK ON LG+ -->
+    <nav class="hidden lg:block text-sm tracking-widest font-semibold uppercase mb-auto">
       <a *ngFor="let item of navItems"
          [href]="'#' + item.id"
          (click)="goto(item.id, $event)"
@@ -62,17 +77,7 @@ import { NgFor, NgIf, NgClass } from '@angular/common';
         {{ item.label }}
       </a>
     </nav>
-
-    <!-- socials -->
-    <ul class="flex gap-6 pt-12 pb-12">
-      <li *ngFor="let s of socials">
-        <a [href]="s.href" target="_blank" rel="noopener"
-           [attr.aria-label]="s.label"
-           class="text-white hover:text-violet-300 transition-colors">
-          <span [innerHTML]="s.svg" class="w-5 h-5 block"></span>
-        </a>
-      </li>
-    </ul>
+    
   </aside>
 
   <!-- 🡆 RIGHT COLUMN (flex-1; no inner scroll bar) -->
@@ -82,7 +87,8 @@ import { NgFor, NgIf, NgClass } from '@angular/common';
     <section id="about"
              class="prose prose-lg leading-8 prose-slate dark:prose-invert
                     prose-p:mb-5 max-w-[38rem] w-full mb-16">
-      <h2 class="sr-only">About me</h2>
+      <!-- Section header: visible on mobile, sr-only on lg+ -->
+      <h2 class="mb-8 text-3xl font-bold lg:sr-only">About me</h2>
       <ng-container *ngFor="let p of about">
         <p [innerHTML]="p" class="mb-5"></p>
       </ng-container>
@@ -92,9 +98,10 @@ import { NgFor, NgIf, NgClass } from '@angular/common';
 
     <!-- EXPERIENCE -->
     <section id="experience" class="mb-16 max-w-[38rem] w-full">
-      <h2 class="sr-only">Experience</h2>
+      <!-- Section header: visible on mobile, sr-only on lg+ -->
+      <h2 class="mb-8 text-3xl font-bold lg:sr-only">Experience</h2>
       <div class="space-y-16">
-        <article *ngFor="let job of experience" class="block">
+        <article *ngFor="let job of experience" class="p-6">
           <div class="mb-5">
             <p class="text-xs font-semibold uppercase tracking-wide text-slate-400 mb-3">{{ job.period }}</p>
             <h3 class="text-lg font-semibold mb-3">
@@ -114,16 +121,29 @@ import { NgFor, NgIf, NgClass } from '@angular/common';
 
     <!-- PROJECTS -->
     <section id="projects" class="mb-16 max-w-[38rem] w-full">
-      <h2 class="sr-only">Projects</h2>
+      <!-- Section header: visible on mobile, sr-only on lg+ -->
+      <h2 class="mb-8 text-3xl font-bold lg:sr-only">Projects</h2>
       <div class="space-y-16">
-        <article *ngFor="let project of projects" class="block">
-          <div class="mb-5">
+        <article *ngFor="let project of projects"
+                 class="group relative transition-all block rounded-lg p-6
+                        hover:bg-slate-800/60 hover:shadow-xl
+                        hover:border-violet-500/30 border border-transparent">
+
+          <!-- Full-cover link for GitHub (only if github exists) -->
+          <a *ngIf="project.github"
+             [href]="project.github" target="_blank" rel="noopener"
+             class="absolute inset-0 z-0"
+             [attr.aria-label]="'View project ' + project.title + ' on GitHub'">
+          </a>
+
+          <!-- Content of the card, needs z-index to be above the full-cover link -->
+          <div class="relative z-10">
             <div class="flex items-center gap-4 mb-3">
               <h3 class="text-lg font-semibold">{{ project.title }}</h3>
               <div class="flex gap-2">
                 <a *ngIf="project.github"
                    [href]="project.github" target="_blank" rel="noopener"
-                   class="text-slate-400 hover:text-white transition-colors"
+                   class="text-slate-400 hover:text-white transition-colors relative z-20"
                    aria-label="View source code">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58
@@ -134,14 +154,14 @@ import { NgFor, NgIf, NgClass } from '@angular/common';
                              0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.52.12-3.17
                              0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4 11.5 11.5
                              0 0 1 3 .4c2.28-1.55 3.29-1.23 3.29-1.23 .66 1.65
-                             .25 2.87 .12 3.17 .77.84 1.23 1.92 1.23 3.23
+                             .25 2.87 .12 3.17 .77.84 1.23 1.92 1.23 3.221
                              0 4.61-2.81 5.63-5.49 5.93 .43.37 .81 1.1 .81 2.22
                              0 1.6-.01 2.88-.01 3.27 0 .32 .21.69 .82.57A12 12 0 0 0 12 .5z"/>
                   </svg>
                 </a>
                 <a *ngIf="project.live"
                    [href]="project.live" target="_blank" rel="noopener"
-                   class="text-slate-400 hover:text-white transition-colors"
+                   class="text-slate-400 hover:text-white transition-colors relative z-20"
                    aria-label="View live demo">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -194,6 +214,13 @@ a:focus-visible {
 .group.active span::before {
   width: 3rem;
 }
+
+/* Make strong tags purple on hover */
+main strong:hover {
+  color: theme('colors.violet.400'); /* Using violet-400 for consistency */
+  transition: color 0.15s ease-in-out;
+}
+
 
 /* Fallback spacing styles in case Tailwind classes are purged */
 .projects-section {
@@ -250,25 +277,32 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   socials: Array<{ label: string; href: string; svg: string }> = [
     {
       label: 'GitHub',
-      href : 'https://github.com/SamuelH98',
-      svg  : `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.1-.75.08-.74.08-.74 1.22.09 1.86 1.26 1.86 1.26 1.08 1.85 2.83 1.32 3.52 1 .11-.78.42-1.32.76-1.62-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.66 1.65.25 2.87.12 3.17.77.84 1.23 1.92 1.23 3.23 0 4.61-2.81 5.63-5.49 5.93.43.37.81 1.1.81 2.22v3.27c0 .32.21.69.82.57A12 12 0 0 0 12 .5z"/></svg>`
+      href: 'https://github.com/SamuelH98',
+      svg: `<svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+              <path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58
+                       0-.29-.01-1.06-.02-2.08-3.34.73-4.04-1.61-4.04-1.61
+                       -.55-1.39-1.34-1.76-1.34-1.76-1.1-.75.08-.74.08-.74
+                       1.22.09 1.86 1.26 1.86 1.26 1.08 1.85 2.83 1.32 3.52 1
+                       .11-.78.42-1.32.76-1.62-2.66-.3-5.47-1.33-5.47-5.93
+                       0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.52.12-3.17
+                       0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4 11.5 11.5
+                       0 0 1 3 .4c2.28-1.55 3.29-1.23 3.29-1.23 .66 1.65
+                       .25 2.87 .12 3.17 .77.84 1.23 1.92 1.23 3.221
+                       0 4.61-2.81 5.63-5.49 5.93 .43.37 .81 1.1 .81 2.22
+                       0 1.6-.01 2.88-.01 3.27 0 .32 .21.69 .82.57A12 12 0 0 0 12 .5z"/>
+            </svg>`
     },
     {
       label: 'LinkedIn',
-      href : 'https://linkedin.com/in/yourname',
-      svg  : `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>`
-    },
-    {
-      label: 'Instagram',
-      href : 'https://instagram.com/yourname',
-      svg  : `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M7.5 2h9a5.5 5.5 0 0 1 5.5 5.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zM7.5 4A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/></svg>`
-    },
-    {
-      label: 'X / Twitter',
-      href : 'https://twitter.com/yourname',
-      svg  : `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`
-    },
+      href: 'https://www.linkedin.com/in/samuel-hale-10562a262/',
+      svg: `<svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5 1.75 1.75 0 016.5 8.25zM19 19h-3v-4.75c0-1.047-.393-1.75-1.375-1.75-1.03 0-1.637.766-1.637 1.75V19h-3v-9h2.973v1.365c.465-.67 1.256-1.615 2.766-1.615 2.012 0 3.535 1.303 3.535 4.195V19z"/>
+            </svg>`
+    }
   ];
+
+  sanitizedSocials: Array<{ label: string; href: string; svg: SafeHtml }> = [];
+
 
   about = [
     `I'm a software engineer with a strong foundation in
@@ -282,7 +316,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
      <strong>reproducible research</strong>.`,
     `Experience highlights include
      <strong>fine-tuning LLMs</strong> for dialect identification, leading a
-     <strong>Django&nbsp;+&nbsp;Nix</strong> capstone with
+     <strong>Django + Nix</strong> capstone with
      <strong>CI/CD pipelines</strong>, and building an
      <strong>election-prediction app</strong> with PyTorch & Flask.`,
     `When I'm not developing, you'll find me exploring
@@ -344,13 +378,23 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   /* ───── constructor / DI ───── */
   constructor(
     private readonly cd  : ChangeDetectorRef,
-    private readonly zone: NgZone
+    private readonly zone: NgZone,
+    private readonly sanitizer: DomSanitizer
   ) {}
 
   /* ───── scroll-spy (IntersectionObserver) ───── */
   private observer?: IntersectionObserver;
 
   ngAfterViewInit(): void {
+    // Sanitize social SVGs when the view initializes
+    this.socials.forEach(s => {
+      this.sanitizedSocials.push({
+        label: s.label,
+        href: s.href,
+        svg: this.sanitizer.bypassSecurityTrustHtml(s.svg)
+      });
+    });
+
     this.zone.runOutsideAngular(() => {
       this.observer = new IntersectionObserver(
         (entries) => {
@@ -365,9 +409,9 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
             }
           });
         },
-        { 
-          threshold: [0.3], 
-          rootMargin: '-64px 0px -66% 0px' 
+        {
+          threshold: [0.3],
+          rootMargin: '-64px 0px -66% 0px'
         }
       );
 
@@ -381,18 +425,30 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void { 
-    this.observer?.disconnect(); 
+  ngOnDestroy(): void {
+    this.observer?.disconnect();
   }
 
   /* ───── nav link click helper ───── */
   goto(id: string, event?: MouseEvent): void {
     event?.preventDefault();
+
+
+    if (id === 'about') {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      return;
+    }
+
+
+
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'start' 
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
       });
     }
   }
