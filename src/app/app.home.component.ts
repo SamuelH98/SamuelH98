@@ -3,32 +3,33 @@
    • Tailwind styling
    • flex layout (one scrollbar)
    • IntersectionObserver scroll-spy
-   • cursor "spot-light"
+   • cursor "spot-light" - REMOVED
    • mb-* spacing throughout
+   • 3D Card with click-to-flip, hover-to-tilt, and idle-float
    ─────────────────────────────────────────────────────────── */
 import {
   Component, AfterViewInit, OnDestroy, HostListener,
   ChangeDetectionStrategy, ViewEncapsulation,
   ChangeDetectorRef, NgZone,
+  ViewChild, ElementRef
 } from '@angular/core';
 import { NgFor, NgIf, NgClass } from '@angular/common';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [NgFor, NgIf, NgClass],
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None, // Important for global Tailwind and custom CSS
+  changeDetection: ChangeDetectionStrategy.OnPush, // For performance optimization
 
   /* ───────────────────────── TEMPLATE ───────────────────────── */
   template: `
-<!-- 🎨  background + spot-light -->
+<!-- 🎨  background -->
 <div class="fixed inset-0 -z-10 overflow-hidden">
   <div class="absolute -top-1/3 -left-1/3 w-[160vw] h-[160vw]
               bg-[conic-gradient(at_top_left,theme(colors.violet.600)_0%,transparent_60%,theme(colors.violet.700)_100%)]
               blur-3xl opacity-20"></div>
-  <div id="spot" class="absolute inset-0 pointer-events-none transition-[background] duration-150"></div>
 </div>
 
 <!-- 📐  page layout  (flex on lg) -->
@@ -41,9 +42,9 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
               lg:sticky lg:top-24 lg:self-start">
 
     <!-- Adjusted H1 for mobile size -->
-    <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight mb-4">Samuel Hale</h1>
+    <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight mb-4">Samuel Hale</h1>
     <!-- Adjusted H2 for mobile size -->
-    <h2 class="text-lg lg:text-xl font-semibold text-slate-300 mb-6">AI Software Engineer</h2>
+    <h2 class="text-lg lg:text-xl font-semibold text-slate-300 mb-6">AI Software Engineer</h2>
 
     <!-- socials - NOW ALWAYS FLEX (visible on mobile) -->
     <ul class="flex gap-6 pt-0 pb-8" *ngIf="sanitizedSocials && sanitizedSocials.length > 0">
@@ -57,7 +58,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
     </ul>
 
     <p class="text-base text-slate-400 max-w-sm mb-16">
-      I build intelligent, user-focused software solutions that seamlessly
+      I build intelligent, user-focused software solutions that seamlessly
       integrate AI to enhance functionality, accessibility, and performance on
       the web.
     </p>
@@ -77,11 +78,46 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
         {{ item.label }}
       </a>
     </nav>
-    
+
   </aside>
 
   <!-- 🡆 RIGHT COLUMN (flex-1; no inner scroll bar) -->
   <main class="flex-1 w-full pr-2">
+
+    <!-- 3D Rotating Image / Card -->
+    <div class="flex justify-center lg:justify-start w-full max-w-[38rem] mx-auto lg:mx-0 mb-12">
+      <!-- Container for the 3D perspective -->
+      <div id="rotating-card-container"
+           class="w-48 h-48 relative cursor-pointer"
+           (click)="toggleFlip()"
+           (mousemove)="handleCardMouseMove($event)"
+           (mouseleave)="resetCardTransform()">
+
+        <!-- NEW WRAPPER for idle animation - applies float when not hovered -->
+        <div class="w-full h-full absolute"
+             [ngClass]="{'card-idle-animate': !isCardHovered}">
+
+          <!-- The actual card that flips and tilts -->
+          <div #rotatingCardElement id="rotating-card"
+               class="w-full h-full relative transition-transform duration-500 ease-in-out"
+               [style.transform]="cardTransformString">
+
+            <!-- Front Face (Image) -->
+            <div class="card-face front-face w-full h-full absolute top-0 left-0
+                        rounded-lg overflow-hidden border-2 border-violet-500 shadow-lg">
+              <img src="ComfyUI_00133_.png" alt="Samuel Hale profile picture" class="w-full h-full object-cover">
+            </div>
+
+            <!-- Back Face (Text Description) -->
+            <div class="card-face back-face w-full h-full absolute top-0 left-0
+                        rounded-lg flex items-center justify-center p-4 text-xs text-center
+                        leading-tight bg-slate-700/80 text-slate-200 border-2 border-violet-500 shadow-lg">
+              <p>Photo of Samuel Hale outside with a green background of trees, smiling and staring at the camera. Realistic, no glasses, professional headshot. LinkedIn style, clean shave, short hair. Camera slightly back, wearing a suit and tie. made with flux</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- ABOUT -->
     <section id="about"
@@ -187,14 +223,6 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
   /* ───────────────────────── STYLES ───────────────────────── */
   styles: [`
-#spot {
-  background: radial-gradient(
-    450px at var(--x, 50%) var(--y, 50%),
-    rgba(147, 51, 234, 0.35),
-    transparent 70%
-  );
-}
-
 a:focus-visible {
   outline: 2px dashed theme('colors.violet.400');
   outline-offset: 2px;
@@ -215,12 +243,44 @@ a:focus-visible {
   width: 3rem;
 }
 
+/* 3D Rotating Card Styles */
+#rotating-card-container {
+  perspective: 1000px; /* Establishes a 3D perspective for child elements */
+}
+
+/* No static transition on #rotating-card itself, it's handled by inline class now */
+#rotating-card {
+  transform-style: preserve-3d; /* Crucial: children are positioned in 3D space */
+}
+
+.card-face {
+  backface-visibility: hidden; /* Hide the back of the element when facing away */
+}
+
+.front-face {
+  /* No special transform needed, it's the default orientation */
+}
+
+.back-face {
+  transform: rotateY(180deg); /* Orient the back face to be 180 degrees rotated */
+}
+
+/* Keyframe animation for subtle vertical float when not hovered */
+@keyframes idle-card-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); } /* Moves up by 5px */
+}
+
+/* Class to apply the idle animation to the wrapper div */
+.card-idle-animate {
+  animation: idle-card-float 4s ease-in-out infinite; /* 4 seconds, smooth, infinite loop */
+}
+
 /* Make strong tags purple on hover */
 main strong:hover {
   color: theme('colors.violet.400'); /* Using violet-400 for consistency */
   transition: color 0.15s ease-in-out;
 }
-
 
 /* Fallback spacing styles in case Tailwind classes are purged */
 .projects-section {
@@ -303,7 +363,6 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
 
   sanitizedSocials: Array<{ label: string; href: string; svg: SafeHtml }> = [];
 
-
   about = [
     `I'm a software engineer with a strong foundation in
      <strong>AI</strong> and <strong>machine learning</strong>, passionate
@@ -316,7 +375,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
      <strong>reproducible research</strong>.`,
     `Experience highlights include
      <strong>fine-tuning LLMs</strong> for dialect identification, leading a
-     <strong>Django + Nix</strong> capstone with
+     <strong>Django + Nix</strong> capstone with
      <strong>CI/CD pipelines</strong>, and building an
      <strong>election-prediction app</strong> with PyTorch & Flask.`,
     `When I'm not developing, you'll find me exploring
@@ -357,7 +416,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
                     <strong>82% accuracy</strong>.`,
       tags: ['PyTorch', 'Flask', 'Python', 'Machine Learning', 'Data Viz'],
       github: 'https://github.com/SamuelH98/CSCI6020-final-project',
-      
+
     },
     {
       title: 'Cython Data Preprocessor for english-corpora.org',
@@ -371,9 +430,30 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
       tags: ['PyTorch', 'Numpy', 'nltk', 'Python'],
       github: 'https://github.com/SamuelH98/SENG-1020-Project',
     }
-
-
   ];
+
+  /* ─────── 3D Card Properties ─────── */
+  @ViewChild('rotatingCardElement') rotatingCardElement!: ElementRef<HTMLElement>;
+  isFlipped: boolean = false;
+  private currentHoverX: number = 0; // Stores rotation around X-axis for hover effect
+  private currentHoverY: number = 0; // Stores rotation around Y-axis for hover effect
+  private maxTiltDegrees: number = 10; // Max tilt angle in degrees
+  isCardHovered: boolean = false; // New property to control idle animation
+
+  // Getter to dynamically generate the combined transform style
+  get cardTransformString(): SafeStyle {
+    let transform = '';
+    // Apply flip transform if the card is flipped
+    if (this.isFlipped) {
+      transform += 'rotateY(180deg) ';
+    }
+    // Apply hover tilt transforms
+    transform += `rotateX(${this.currentHoverX}deg) rotateY(${this.currentHoverY}deg)`;
+
+    // Sanitize and return the combined transform string
+    return this.sanitizer.bypassSecurityTrustStyle(transform.trim());
+  }
+
 
   /* ───── constructor / DI ───── */
   constructor(
@@ -402,7 +482,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
             const visible = entries
               .filter(e => e.isIntersecting)
               .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-            
+
             if (visible && visible.target.id !== this.active) {
               this.active = visible.target.id;
               this.cd.markForCheck();
@@ -410,8 +490,8 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
           });
         },
         {
-          threshold: [0.3],
-          rootMargin: '-64px 0px -66% 0px'
+          threshold: [0.3], // Trigger when 30% of the element is visible
+          rootMargin: '-64px 0px -66% 0px' // Adjust visible area for detection
         }
       );
 
@@ -431,10 +511,9 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
 
   /* ───── nav link click helper ───── */
   goto(id: string, event?: MouseEvent): void {
-    event?.preventDefault();
+    event?.preventDefault(); // Prevent default anchor jump
 
-
-    if (id === 'about') {
+    if (id === 'about') { // Special case for "About" to scroll to top
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
@@ -442,25 +521,68 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-
-
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({
         behavior: 'smooth',
-        block: 'start'
+        block: 'start' // Scroll to the top of the element
       });
     }
   }
 
-  /* ───── spot-light tracking ───── */
-  @HostListener('mousemove', ['$event'])
-  track(event: MouseEvent): void {
-    const { clientX, clientY } = event;
-    const spotElement = document.getElementById('spot');
-    if (spotElement) {
-      spotElement.style.setProperty('--x', `${clientX}px`);
-      spotElement.style.setProperty('--y', `${clientY}px`);
+  /* ───── 3D Card Interaction Methods ───── */
+  toggleFlip(): void {
+    this.isFlipped = !this.isFlipped;
+    // Reset tilt immediately so it doesn't "jump" when flipping
+    this.currentHoverX = 0;
+    this.currentHoverY = 0;
+    this.cd.markForCheck(); // Trigger change detection for state update
+  }
+
+  handleCardMouseMove(event: MouseEvent): void {
+    // Run outside Angular zone for performance on frequent events
+    this.zone.runOutsideAngular(() => {
+      if (!this.rotatingCardElement) return;
+
+      // Set hovered state to true if not already
+      if (!this.isCardHovered) {
+        this.isCardHovered = true;
+        this.zone.run(() => this.cd.markForCheck()); // Mark for change to update template class
+      }
+
+      const card = this.rotatingCardElement.nativeElement;
+      const rect = card.getBoundingClientRect();
+
+      // Calculate mouse position relative to the center of the card
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      const mouseX = event.clientX;
+      const mouseY = event.clientY;
+
+      // Normalize position to a -1 to 1 range
+      const offsetX = (mouseX - centerX) / (rect.width / 2);
+      const offsetY = (mouseY - centerY) / (rect.height / 2);
+
+      // Calculate rotation angles for tilt
+      // Tilt Y based on horizontal mouse movement (right-side mouse -> rotate right)
+      // Tilt X based on vertical mouse movement (bottom-side mouse -> rotate up, so invert Y)
+      this.currentHoverY = offsetX * this.maxTiltDegrees;
+      this.currentHoverX = -offsetY * this.maxTiltDegrees;
+
+      // Trigger change detection within Angular zone
+      this.zone.run(() => this.cd.markForCheck());
+    });
+  }
+
+  resetCardTransform(): void {
+    // Reset tilt angles when mouse leaves the card
+    this.currentHoverX = 0;
+    this.currentHoverY = 0;
+    // Set hovered state to false if not already
+    if (this.isCardHovered) {
+      this.isCardHovered = false;
+      this.cd.markForCheck(); // Trigger change detection
     }
   }
 }
