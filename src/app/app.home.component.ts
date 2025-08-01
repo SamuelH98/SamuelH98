@@ -27,9 +27,7 @@ import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
   template: `
 <!-- 🎨  background -->
 <div class="fixed inset-0 -z-10 overflow-hidden">
-  <div class="absolute -top-1/3 -left-1/3 w-[160vw] h-[160vw]
-              bg-[conic-gradient(at_top_left,theme(colors.violet.600)_0%,transparent_60%,theme(colors.violet.700)_100%)]
-              blur-3xl opacity-20"></div>
+  <div class="absolute -top-1/3 -left-1/3 w-[160vw] h-[160vw] conic-gradient blur-3xl opacity-20"></div>
 </div>
 
 <!-- 📐  page layout  (flex on lg) -->
