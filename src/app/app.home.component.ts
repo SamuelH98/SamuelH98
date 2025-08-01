@@ -3,6 +3,8 @@
    • Tailwind styling
    • flex layout (one scrollbar)
    • IntersectionObserver scroll-spy
+   • cursor "spot-light" - REMOVED
+   • mb-* spacing throughout
    • 3D Card with click-to-flip, hover-to-tilt, and idle-float
    ─────────────────────────────────────────────────────────── */
 import {
@@ -23,15 +25,12 @@ import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
 
   /* ───────────────────────── TEMPLATE ───────────────────────── */
   template: `
-<!-- 🎨  background - FIX for Firefox Brightness Issue -->
-<!-- By separating opacity onto a parent container from the blur filter on the child,
-     we prevent a rendering bug in Firefox where the combination causes excessive brightness. -->
-<div class="fixed inset-0 -z-10 overflow-hidden opacity-20">
+<!-- 🎨  background -->
+<div class="fixed inset-0 -z-10 overflow-hidden">
   <div class="absolute -top-1/3 -left-1/3 w-[160vw] h-[160vw]
               bg-[conic-gradient(at_top_left,theme(colors.violet.600)_0%,transparent_60%,theme(colors.violet.700)_100%)]
-              blur-3xl"></div>
+              blur-3xl opacity-20"></div>
 </div>
-
 
 <!-- 📐  page layout  (flex on lg) -->
 <div class="min-h-screen pt-16 lg:pt-24 px-6 lg:px-20
@@ -247,27 +246,15 @@ a:focus-visible {
 /* 3D Rotating Card Styles */
 #rotating-card-container {
   perspective: 1000px; /* Establishes a 3D perspective for child elements */
-  -webkit-perspective: 1000px; /* Safari vendor prefix */
 }
 
-/* FIX: Hint to browser that transform will change.
- * This promotes the element to its own layer, improving animation performance
- * and preventing flickering issues, especially in Safari.
-*/
+/* No static transition on #rotating-card itself, it's handled by inline class now */
 #rotating-card {
   transform-style: preserve-3d; /* Crucial: children are positioned in 3D space */
-  -webkit-transform-style: preserve-3d; /* Safari vendor prefix */
-  will-change: transform; /* Performance optimization hint */
 }
 
-/* FIX: Explicitly hide the back of an element when it's not facing the user.
- * This is the primary fix for 3D rendering glitches and flickering in Safari.
-*/
 .card-face {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden; /* Safari vendor prefix for preventing flicker */
-  /* Add a tiny 3D transform to ensure it's hardware-accelerated, another Safari fix */
-  transform: translateZ(0);
+  backface-visibility: hidden; /* Hide the back of the element when facing away */
 }
 
 .front-face {
@@ -275,7 +262,7 @@ a:focus-visible {
 }
 
 .back-face {
-  transform: rotateY(180deg) translateZ(1px); /* Ensure back-face is also on its own layer */
+  transform: rotateY(180deg); /* Orient the back face to be 180 degrees rotated */
 }
 
 /* Keyframe animation for subtle vertical float when not hovered */
