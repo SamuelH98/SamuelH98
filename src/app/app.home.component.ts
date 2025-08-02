@@ -17,14 +17,12 @@ import { NgFor, NgIf, NgClass } from '@angular/common';
 import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [NgFor, NgIf, NgClass],
-  encapsulation: ViewEncapsulation.None, // Important for global Tailwind and custom CSS
-  changeDetection: ChangeDetectionStrategy.OnPush, // For performance optimization
-
-  /* ───────────────────────── TEMPLATE ───────────────────────── */
-  template: `
+    selector: 'app-home',
+    imports: [NgFor, NgIf, NgClass],
+    encapsulation: ViewEncapsulation.None, // Important for global Tailwind and custom CSS
+    changeDetection: ChangeDetectionStrategy.OnPush, // For performance optimization
+    /* ───────────────────────── TEMPLATE ───────────────────────── */
+    template: `
 <!-- 🎨  background -->
 <div class="fixed inset-0 -z-10 overflow-hidden">
   <div class="absolute -top-1/3 -left-1/3 w-[160vw] h-[160vw] conic-gradient blur-3xl opacity-20"></div>
@@ -218,9 +216,8 @@ import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
   </main>
 </div>
   `,
-
-  /* ───────────────────────── STYLES ───────────────────────── */
-  styles: [`
+    /* ───────────────────────── STYLES ───────────────────────── */
+    styles: [`
 a:focus-visible {
   outline: 2px dashed theme('colors.violet.400');
   outline-offset: 2px;
@@ -320,7 +317,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-`],
+`]
 })
 export class HomeComponent implements AfterViewInit, OnDestroy {
   /* ─────── public data  (fully typed) ─────── */
