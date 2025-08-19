@@ -1,3 +1,228 @@
-/* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
-      
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+body {
+    background-color: #000000;
+    color: #f1f5f9;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    
+    /* Enhanced nebula with more depth - Firefox optimized */
+    background-image:
+        radial-gradient(ellipse 800px 400px at 20% 30%, rgba(99, 102, 241, 0.08), rgba(99, 102, 241, 0) 70%),
+        radial-gradient(ellipse 600px 300px at 80% 20%, rgba(168, 85, 247, 0.06), rgba(168, 85, 247, 0) 70%),
+        radial-gradient(ellipse 500px 250px at 40% 70%, rgba(236, 72, 153, 0.05), rgba(236, 72, 153, 0) 70%),
+        radial-gradient(ellipse 700px 350px at 70% 80%, rgba(34, 211, 238, 0.04), rgba(34, 211, 238, 0) 70%),
+        radial-gradient(ellipse 400px 200px at 10% 90%, rgba(59, 130, 246, 0.03), rgba(59, 130, 246, 0) 70%),
+        radial-gradient(ellipse 300px 600px at 90% 10%, rgba(147, 51, 234, 0.04), rgba(147, 51, 234, 0) 70%);
+    
+    background-attachment: scroll;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    animation: cosmicDrift 400s linear infinite;
+    position: relative;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+@keyframes cosmicDrift {
+    0%   { background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%, 50% 50%, 25% 75%; }
+    33%  { background-position: 33% 33%, 66% 33%, 33% 66%, 66% 66%, 60% 40%, 40% 60%; }
+    66%  { background-position: 66% 0%, 33% 50%, 66% 100%, 33% 50%, 70% 30%, 30% 70%; }
+    100% { background-position: 100% 50%, 0% 100%, 100% 0%, 0% 50%, 30% 70%, 70% 30%; }
+}
+
+/* Enhanced starfield with multiple layers */
+.starfield {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.starfield::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,1), rgba(255,255,255,0)),
+        radial-gradient(1px 1px at 25% 75%, rgba(255,255,255,0.95), rgba(255,255,255,0)),
+        radial-gradient(1px 1px at 55% 42%, rgba(255,255,255,1), rgba(255,255,255,0)),
+        radial-gradient(1px 1px at 78% 62%, rgba(255,255,255,0.9), rgba(255,255,255,0)),
+        radial-gradient(1px 1px at 92% 88%, rgba(255,255,255,1), rgba(255,255,255,0)),
+        radial-gradient(1px 1px at 47% 12%, rgba(255,255,255,1), rgba(255,255,255,0)),
+        radial-gradient(1px 1px at 68% 83%, rgba(255,255,255,0.95), rgba(255,255,255,0)),
+        radial-gradient(1px 1px at 35% 65%, rgba(255,255,255,0.85), rgba(255,255,255,0)),
+        radial-gradient(1px 1px at 15% 45%, rgba(255,255,255,1), rgba(255,255,255,0)),
+        radial-gradient(1px 1px at 85% 25%, rgba(255,255,255,0.9), rgba(255,255,255,0));
+    background-repeat: repeat;
+    background-size: 300px 300px;
+    opacity: 0.7;
+    animation: twinkle 20s linear infinite;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Distant stars layer */
+.starfield::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(0.5px 0.5px at 33% 28%, rgba(255,255,255,0.6), rgba(255,255,255,0)),
+        radial-gradient(0.5px 0.5px at 77% 15%, rgba(255,255,255,0.5), rgba(255,255,255,0)),
+        radial-gradient(0.5px 0.5px at 19% 73%, rgba(255,255,255,0.7), rgba(255,255,255,0)),
+        radial-gradient(0.5px 0.5px at 61% 91%, rgba(255,255,255,0.4), rgba(255,255,255,0)),
+        radial-gradient(0.5px 0.5px at 87% 67%, rgba(255,255,255,0.6), rgba(255,255,255,0)),
+        radial-gradient(0.5px 0.5px at 41% 37%, rgba(255,255,255,0.5), rgba(255,255,255,0));
+    background-repeat: repeat;
+    background-size: 400px 400px;
+    opacity: 0.4;
+    animation: twinkle 25s linear infinite reverse;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+@keyframes twinkle {
+    0%   { opacity: 0.3; }
+    25%  { opacity: 0.8; }
+    50%  { opacity: 0.5; }
+    75%  { opacity: 0.9; }
+    100% { opacity: 0.3; }
+}
+
+/* Multiple shooting stars */
+.shooting-star {
+    position: fixed;
+    width: 2px;
+    height: 80px;
+    background: linear-gradient(45deg, rgba(255,255,255,1), rgba(255,255,255,0.8), transparent);
+    opacity: 0;
+    z-index: 2;
+    pointer-events: none;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(255,255,255,0.8);
+}
+
+.shooting-star:nth-child(1) {
+    top: -5%;
+    left: 20%;
+    transform: rotate(-45deg);
+    animation: shootingStar1 12s linear infinite;
+}
+
+.shooting-star:nth-child(2) {
+    top: -5%;
+    left: 60%;
+    transform: rotate(-35deg);
+    animation: shootingStar2 15s linear infinite 3s;
+}
+
+.shooting-star:nth-child(3) {
+    top: -5%;
+    left: 80%;
+    transform: rotate(-55deg);
+    animation: shootingStar3 18s linear infinite 7s;
+}
+
+@keyframes shootingStar1 {
+    0% {
+        opacity: 0;
+        transform: translate(0, 0) rotate(-45deg);
+    }
+    3% {
+        opacity: 1;
+    }
+    6% {
+        opacity: 1;
+        transform: translate(60vw, 120vh) rotate(-45deg);
+    }
+    7% {
+        opacity: 0;
+        transform: translate(70vw, 130vh) rotate(-45deg);
+    }
+    100% { opacity: 0; }
+}
+
+@keyframes shootingStar2 {
+    0% {
+        opacity: 0;
+        transform: translate(0, 0) rotate(-35deg);
+    }
+    2% {
+        opacity: 1;
+    }
+    5% {
+        opacity: 1;
+        transform: translate(40vw, 120vh) rotate(-35deg);
+    }
+    6% {
+        opacity: 0;
+        transform: translate(50vw, 130vh) rotate(-35deg);
+    }
+    100% { opacity: 0; }
+}
+
+@keyframes shootingStar3 {
+    0% {
+        opacity: 0;
+        transform: translate(0, 0) rotate(-55deg);
+    }
+    2.5% {
+        opacity: 1;
+    }
+    4.5% {
+        opacity: 1;
+        transform: translate(80vw, 120vh) rotate(-55deg);
+    }
+    5.5% {
+        opacity: 0;
+        transform: translate(90vw, 130vh) rotate(-55deg);
+    }
+    100% { opacity: 0; }
+}
+
+/* Content styling for demo */
+.content {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem;
+}
+
+.cosmic-text {
+    background: linear-gradient(45deg, #ffffff, #e2e8f0, #cbd5e1);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s ease-in-out infinite alternate;
+}
+
+@keyframes shimmer {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.2); }
+}
+
+/* Improved performance with will-change */
+body, .starfield::before, .starfield::after, .shooting-star {
+    will-change: transform, opacity;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

@@ -36,7 +36,7 @@ import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
     <!-- Adjusted H1 for mobile size -->
     <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight mb-4">Samuel Hale</h1>
     <!-- Adjusted H2 for mobile size -->
-    <h2 class="text-lg lg:text-xl font-semibold text-slate-300 mb-6">AI Software Engineer</h2>
+    <h2 class="text-lg lg:text-xl font-semibold text-slate-300 mb-6">Software Engineer</h2>
 
     <!-- socials - NOW ALWAYS FLEX (visible on mobile) -->
     <ul class="flex gap-6 pt-0 pb-8" *ngIf="sanitizedSocials && sanitizedSocials.length > 0">
@@ -50,9 +50,7 @@ import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
     </ul>
 
     <p class="text-base text-slate-400 max-w-sm mb-16">
-      I build intelligent, user-focused software solutions that seamlessly
-      integrate AI to enhance functionality, accessibility, and performance on
-      the web.
+       I architect, build, and deploy high-quality software solutions. As a versatile engineer, I tackle challenges across the full stack to deliver robust, end-to-end applications.
     </p>
 
     <!-- section nav - HIDDEN ON MOBILE, BLOCK ON LG+ -->
@@ -96,14 +94,14 @@ import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
 
             <!-- Front Face (Image) -->
             <div class="card-face front-face w-full h-full absolute top-0 left-0
-                        rounded-lg overflow-hidden border-2 border-violet-500 shadow-lg">
+                        rounded-lg overflow-hidden border-2 border-transparent shadow-lg">
               <img src="ComfyUI_00133_.png" alt="Samuel Hale profile picture" class="w-full h-full object-cover">
             </div>
 
             <!-- Back Face (Text Description) -->
             <div class="card-face back-face w-full h-full absolute top-0 left-0
                         rounded-lg flex items-center justify-center p-4 text-xs text-center
-                        leading-tight bg-slate-700/80 text-slate-200 border-2 border-violet-500 shadow-lg">
+                        leading-tight bg-slate-700/80 text-slate-200 border-2 border-transparent shadow-lg">
               <p>Photo of Samuel Hale outside with a green background of trees, smiling and staring at the camera. Realistic, no glasses, professional headshot. LinkedIn style, clean shave, short hair. Camera slightly back, wearing a suit and tie. made with flux</p>
             </div>
           </div>
@@ -120,6 +118,27 @@ import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
       <ng-container *ngFor="let p of about">
         <p [innerHTML]="p" class="mb-5"></p>
       </ng-container>
+    </section>
+
+    <hr class="border-slate-600/30 mb-16"/>
+
+    <!-- EDUCATION -->
+    <section id="education" class="mb-16 max-w-[38rem] w-full">
+      <!-- Section header: visible on mobile, sr-only on lg+ -->
+      <h2 class="mb-8 text-3xl font-bold lg:sr-only">Education</h2>
+      <div class="space-y-16">
+        <article *ngFor="let edu of education" class="p-6">
+          <div class="mb-5">
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-400 mb-3">{{ edu.period }}</p>
+            <h3 class="text-lg font-semibold mb-3">
+              {{ edu.degree }} <span class="font-normal text-slate-300">· {{ edu.school }}</span>
+            </h3>
+            <ul class="list-disc pl-5">
+              <li *ngFor="let detail of edu.details" class="leading-7 text-slate-300 mb-2" [innerHTML]="detail"></li>
+            </ul>
+          </div>
+        </article>
+      </div>
     </section>
 
     <hr class="border-slate-600/30 mb-16"/>
@@ -182,7 +201,7 @@ import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
                              0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.52.12-3.17
                              0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4 11.5 11.5
                              0 0 1 3 .4c2.28-1.55 3.29-1.23 3.29-1.23 .66 1.65
-                             .25 2.87 .12 3.17 .77.84 1.23 1.92 1.23 3.221
+                       .25 2.87 .12 3.17 .77.84 1.23 1.92 1.23 3.221
                              0 4.61-2.81 5.63-5.49 5.93 .43.37 .81 1.1 .81 2.22
                              0 1.6-.01 2.88-.01 3.27 0 .32 .21.69 .82.57A12 12 0 0 0 12 .5z"/>
                   </svg>
@@ -206,6 +225,36 @@ import { DomSanitizer, SafeHtml, SafeStyle } from '@angular/platform-browser';
             </ul>
           </div>
         </article>
+      </div>
+    </section>
+
+    <hr class="border-slate-600/30 mb-16"/>
+
+    <!-- TECHNICAL SKILLS -->
+    <section id="technical-skills" class="mb-16 max-w-[38rem] w-full">
+      <h2 class="mb-8 text-3xl font-bold lg:sr-only">Technical Skills</h2>
+      <div class="space-y-8">
+        <div>
+          <h3 class="text-lg font-semibold mb-3">Languages</h3>
+          <ul class="flex flex-wrap gap-2">
+            <li *ngFor="let lang of technicalSkills.languages"
+                class="px-3 py-1 rounded-full bg-slate-700/60 text-sm font-medium">{{ lang }}</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-3">Frameworks</h3>
+          <ul class="flex flex-wrap gap-2">
+            <li *ngFor="let framework of technicalSkills.frameworks"
+                class="px-3 py-1 rounded-full bg-slate-700/60 text-sm font-medium">{{ framework }}</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-3">Tools</h3>
+          <ul class="flex flex-wrap gap-2">
+            <li *ngFor="let tool of technicalSkills.tools"
+                class="px-3 py-1 rounded-full bg-slate-700/60 text-sm font-medium">{{ tool }}</li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -320,8 +369,10 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
 
   navItems = [
     { id: 'about',      label: 'About' },
+    { id: 'education',  label: 'Education' },
     { id: 'experience', label: 'Experience' },
     { id: 'projects',   label: 'Projects' },
+    { id: 'technical-skills', label: 'Skills' }
   ];
   active = 'about';
 
@@ -345,9 +396,9 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     },
     {
       label: 'LinkedIn',
-      href: 'https://www.linkedin.com/in/samuel-hale-10562a262/',
+      href: 'https://www.linkedin.com/in/samuel-james-hale/',
       svg: `<svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-              <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5 1.75 1.75 0 016.5 8.25zM19 19h-3v-4.75c0-1.047-.393-1.75-1.375-1.75-1.03 0-1.637.766-1.637 1.75V19h-3v-9h2.973v1.365c.465-.67 1.256-1.615 2.766-1.615 2.012 0 3.535 1.303 3.535 4.195V19z"/>
+              <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 002.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5 1.75 1.75 0 016.5 8.25zM19 19h-3v-4.75c0-1.047-.393-1.75-1.375-1.75-1.03 0-1.637.766-1.637 1.75V19h-3v-9h2.973v1.365c.465-.67 1.256-1.615 2.766-1.615 2.012 0 3.535 1.303 3.535 4.195V19z"/>
             </svg>`
     }
   ];
@@ -355,24 +406,33 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   sanitizedSocials: Array<{ label: string; href: string; svg: SafeHtml }> = [];
 
   about = [
-    `I'm a software engineer with a strong foundation in
-     <strong>AI</strong> and <strong>machine learning</strong>, passionate
-     about building <strong class="font-semibold">intelligent, practical
-     systems</strong> that solve real-world problems.`,
-    `I hold a <strong>B.S.</strong> in Software Engineering (Data Science) and
-     I'm currently pursuing my <strong>M.S.</strong> through ECU's accelerated
-     program, deepening my expertise in
-     <strong>full-stack development</strong> and
-     <strong>reproducible research</strong>.`,
-    `Experience highlights include
-     <strong>fine-tuning LLMs</strong> for dialect identification, leading a
-     <strong>Django + Nix</strong> capstone with
-     <strong>CI/CD pipelines</strong>, and building an
-     <strong>election-prediction app</strong> with PyTorch & Flask.`,
-    `When I'm not developing, you'll find me exploring
-     <strong>Linux / NixOS</strong>, diving into technical literature, or
-     hanging out with friends. I thrive where
-     <strong>AI, software engineering, and systems thinking</strong> meet.`,
+      `I'm a versatile software engineer who builds robust, end-to-end applications. My passion lies in tackling complex challenges across the full technology stack, from <strong>back-end architecture</strong> to intuitive <strong>front-end experiences</strong>.`,
+      `My experience covers the entire development lifecycle, including system design, writing clean code, and ensuring quality through <strong>comprehensive testing</strong>. I am adept at managing infrastructure and streamlining deployments using modern <strong>CI/CD pipelines</strong> and containerization tools like <strong>Docker</strong>.`,
+      `I leverage a broad range of technologies to solve problems effectively, including <strong>cloud platforms</strong> (AWS, GCP) and the integration of <strong>AI/ML models</strong>. I am a pragmatic developer focused on delivering reliable, scalable, and impactful software.`
+  ];
+
+  education: Array<{
+    period: string;
+    degree: string;
+    school: string;
+    details: string[];
+  }> = [
+    {
+      period: 'Aug 2021 — May 2025',
+      degree: 'B.S. in Software Engineering',
+      school: 'East Carolina University',
+      details: [
+        "Chancellor's List (Spring 2025)",
+        "Dean's List (Fall 2022, Fall 2023)",
+        "Participated in BS/MS Accelerated Program"
+      ]
+    },
+    {
+      period: 'Aug 2016 — May 2020',
+      degree: 'A.S. in Computer Design/Programming',
+      school: 'Wake Technical Community College',
+      details: []
+    }
   ];
 
   experience: Array<{
@@ -383,13 +443,18 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     tags: string[];
   }> = [
     {
+      period: 'May 2025 — Aug 2025',
+      title: 'Software Engineer',
+      company: 'DataIntel Research',
+      summary: `Developed and containerized AI-driven solutions, including building a threat-analysis dashboard with an integrated <strong>LLM (Gemma-3)</strong>. Optimized data processing pipelines and deployed services using <strong>Docker Compose</strong>, ensuring reproducible research environments.`,
+      tags: ['Python', 'C', 'AI/ML', 'LLM', 'Docker', 'Neo4j'],
+    },
+    {
       period : 'Dec 2022 — Jan 2023',
-      title  : 'Frontend Developer',
-      company: 'ECU · REU Program',
-      summary: `Built and improved <strong>internal research dashboards</strong>
-                with HTML, CSS, and Bootstrap — focusing on
-                <strong>accessibility</strong> & responsive design.`,
-      tags   : ['HTML', 'CSS', 'JavaScript', 'Bootstrap', 'Accessibility'],
+      title  : 'Frontend Developer (Contract)',
+      company: 'East Carolina University',
+      summary: `Led the redesign and implementation of an internal research dashboard, focusing on <strong>UI/UX, usability, and responsive design</strong>. Collaborated with a multidisciplinary team to deliver a polished product under tight deadlines.`,
+      tags   : ['HTML', 'CSS', 'JavaScript', 'Bootstrap', 'UI/UX'],
     },
   ];
 
@@ -401,27 +466,37 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     live?: string;
   }> = [
     {
-      title: '2024 AI Election Predictor',
-      description: `Built a <strong>machine-learning web app</strong> using
-                    PyTorch and Flask that predicts 2024 election outcome with
-                    <strong>82% accuracy</strong>.`,
-      tags: ['PyTorch', 'Flask', 'Python', 'Machine Learning', 'Data Viz'],
+      title: 'NCEMPT Online — Capstone',
+      description: `Architected and maintained a complete <strong>Django web application</strong> designed for scalability. Managed the full development lifecycle, including establishing <strong>CI/CD pipelines</strong> and implementing reproducible deployment environments with <strong>Nix</strong>.`,
+      tags: ['Python', 'Django', 'DevOps', 'CI/CD', 'Nix', 'Full-Stack'],
+    },
+    {
+      title: 'Dialect Identification using LLMs',
+      description: `Fine-tuned a <strong>Phi-4 LLM</strong> on NVIDIA GPUs to improve dialect classification accuracy by 10%. This project involved the full ML lifecycle, from high-performance data preprocessing with <strong>Cython</strong> to model training and validation.`,
+      tags: ['Python', 'PyTorch', 'AI/ML', 'LLM', 'CUDA', 'Data Engineering'],
+    },
+    {
+      title: '2024 Election Prediction App',
+      description: `Built and deployed a full-stack web application with a <strong>Flask back end</strong> that serves a <strong>PyTorch</strong> predictive model. The application was designed for deployment on cloud platforms and achieved 82% accuracy on its prediction task.`,
+      tags: ['Python', 'Flask', 'PyTorch', 'Machine Learning', 'Docker'],
       github: 'https://github.com/SamuelH98/CSCI6020-final-project',
-
     },
     {
-      title: 'Cython Data Preprocessor for english-corpora.org',
-      description: 'A <strong>high-performance</strong> data preprocessing tool written in <strong>Cython</strong>, designed to efficiently parse and clean large corpora from <strong>english-corpora.org</strong>. The tool accelerates <strong>tokenization</strong> and <strong>formatting</strong> tasks to support downstream <strong>NLP pipelines</strong>.',
-      tags: ['Cython'],
-      github: 'https://github.com/SamuelH98/data-preprocessor',
-    },
-    {
-      title: 'Dictionary program with AI assistant',
-      description: 'An interactive <strong>dictionary application</strong> featuring an <strong>AI-powered assistant</strong> capable of understanding user input and providing <strong>definitions</strong>, <strong>synonyms</strong>, and <strong>usage examples</strong>. Built using <strong>PyTorch</strong> for the assistant’s <strong>intent recognition</strong>, with NLP support from <strong>nltk</strong> and <strong>Numpy</strong>.',
-      tags: ['PyTorch', 'Numpy', 'nltk', 'Python'],
-      github: 'https://github.com/SamuelH98/SENG-1020-Project',
+      title: 'GlucoCheck Website — Capstone',
+      description: `Developed a complete web application from the ground up to help users log and monitor health data. Engineered the <strong>Node.js and Express.js back end</strong>, designed the <strong>MongoDB schema</strong>, and built a responsive front end with vanilla JavaScript.`,
+      tags: ['JavaScript', 'HTML/CSS', 'MongoDB', 'Node.js', 'Express.js', 'Full-Stack'],
     }
   ];
+
+  technicalSkills: {
+    languages: string[];
+    frameworks: string[];
+    tools: string[];
+  } = {
+    languages: ['Python', 'Java', 'C/C++', 'C#', 'SQL (Postgres, SQLite)', 'JavaScript', 'TypeScript', 'HTML/CSS', 'MongoDB'],
+    frameworks: ['Django', 'React', 'Angular', 'Flask', 'Express.js'],
+    tools: ['Git', 'Docker', 'Nix', 'Linux', 'Nvim', 'Google Cloud Platform', 'AWS']
+  };
 
   /* ─────── 3D Card Properties ─────── */
   @ViewChild('rotatingCardElement') rotatingCardElement!: ElementRef<HTMLElement>;
